@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import styled, { createGlobalStyle, css, keyframes } from "styled-components";
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
+import theme from "./theme";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -8,60 +9,46 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const Button = styled.button`
+  border-radius:30px;
+  padding:25px 15px;
+  background-color: ${props => props.theme.mainColor}
+`
+
 class App extends Component {
   render() {
     return (
+      <ThemeProvider theme={theme}>
       <div className="App">
-        <GlobalStyle />
-        <Container>
-          <Button success>성공</Button>
-          <Button danger>실패</Button>
-          <Button danger rotationTime={5}>실패 애니메이션 5초</Button>
-          <Anchor href="http://google.com">Go to Google</Anchor>
-        </Container>
-        
+          <GlobalStyle />
+          <Container>
+            <Form />
+            <Form />
+            <Form />
+          </Container>
       </div>
+      </ThemeProvider>
     );
   }
 }
+
+const Card = styled.div`
+  background-color:white;
+`
 
 const Container = styled.div`
   height:100vh;
   width:100%;
   background-color:#bdc3c7;
-`
-
-const Button = styled.button`
-  border-radius:50px;
-  padding:5px;
-  width:120px;
-  color:#fff;
-  font-weight:600;
-  cursor:pointer;
-  background:#000;
-  &:active,
-  &:focus {
-    outline:none;
-  }
-  background-color: ${props => props.danger ? "#e74c3c" : "#2ecc71"}
-  ${props => {
-    if(props.danger){
-      return css`animation: ${rotation} ${props.rotationTime}s linear infinite`;
-    }
-  }}
-`
-
-const Anchor = styled(Button.withComponent('a'))`
-  text-decoration:none;
-`
-
-const rotation = keyframes`
-  form{
-    transform:rotate(0deg);
-  }
-  to{
-    transform:rotate(360deg);
+  ${Card} {
+    background-color:blue;
+  },
+  ${Card}:last-child{
+    background-color:${props => props.theme.mainColor}
   }
 `
+const Form = () => (
+  <Card><Button>Hello</Button></Card>
+)
 
 export default App;

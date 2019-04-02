@@ -65,6 +65,7 @@ css를 변수로 만들고 변수로 사용한다.
 `withComponent(기능추가 할 Element)`
 ```{.styled}
     <Anchor href="http://google.com">Go to Google</Anchor>
+    
     const Anchor = Button.withComponent('a')
 ```
 
@@ -108,3 +109,97 @@ css를 변수로 만들고 변수로 사용한다.
     }
   }}
 ```
+
+## minxin 사용법
+
+```{.styled}
+//사용법
+상단에 css를 추가한다.
+import styled, { createGlobalStyle, `css` } from "styled-components";
+
+  //변수 생성
+  const 변수명 = css`
+    ... css
+  `
+  
+  //변수 생성 예제
+  const awsomeCard = css`
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.88);
+    background-color:white;
+    border-radius: 10px;
+    padding: 20px;
+  `
+  
+  //실제 적용 예제
+  const Input = styled.input`
+    border:none;
+    border-radius:5px;
+    ${awsomeCard} // 변수에 믹스인 변수를 추가
+  `
+```
+
+## 속성 추가법
+```{.styled}
+  //사용법
+  const 변수명 = styled.input`.attrs`({
+    ..속성 추가
+  })
+
+  //input에 disabled 추가 예제 
+  const Input = styled.input.attrs({
+    disabled: true
+  })`
+    border:none;
+    border-radius:5px;
+    ${awsomeCard}
+  `
+```
+
+## theme 작성법
+```{.styled}
+  #### 사용법
+
+  //theme.js 파일 만든다
+  const theme = {
+    mainColor: "#ff7f50",
+    dangerColor: "#ff4757",
+    successColor: "#3742fa"
+  }
+  export default theme;
+  
+  //App.js 
+  상단에 ThemeProvider를 추가한다.
+  import styled, { createGlobalStyle, `ThemeProvider` } from "styled-components";
+  import theme from "./theme"; // theme js를 추가한다.
+  
+  <ThemeProvider theme={theme}> // ThemeProvider 추가  theme= {추가한 theme}
+    <div className="App">
+        <GlobalStyle />
+        <Container>
+          <Form />
+        </Container>
+    </div>
+  </ThemeProvider>
+  
+  const Button = styled.button`
+    border-radius:30px;
+    padding:25px 15px;
+    background-color: ${props => props.theme.successColor} // theme 색상 추가
+  `
+```
+
+## Nesting
+
+```{.stlyed}
+const Container = styled.div`
+  ${Card} {   //container > card {...css}
+    background-color:blue; 
+  },
+  ${Card}:last-child{   //container > card:last-child {...css}
+    background-color:${props => props.theme.mainColor}
+  }
+`
+```
+
+## 참조 사이트
+[노마드코더 리액트 스타일? Styled Components!](https://academy.nomadcoders.co/courses/enrolled/303211)
